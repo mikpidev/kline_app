@@ -1,0 +1,50 @@
+# Laravel & PHP
+/vendor/
+/.env
+.env.*
+.phpunit.result.cache
+/storage/*.key
+/storage/*.log
+/storage/*.txt
+/storage/app/public/*
+/storage/framework/cache/data/*
+/storage/framework/sessions/*
+/storage/framework/views/*
+/storage/logs/*.log
+/bootstrap/cache/*
+
+# Node.js, Vite & Tailwind
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+/public/hot
+/public/storage
+/storage/debugbar
+/build
+/dist
+/.vite
+*.local
+
+# Docker
+docker-compose.override.yml
+*.env.docker
+
+# Base de datos / dumps
+*.sql
+*.sqlite
+*.sqlite3
+
+# System & OS
+Thumbs.db
+.DS_Store
+
+# IDEs & Editors
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+*.code-workspace
+
+# Git
+*.orig
