@@ -1,0 +1,14 @@
+{
+  "name": "Laravel Dev Container",
+  "dockerComposeFile": "../docker-compose.yml",
+  "service": "kline_app",
+  "workspaceFolder": "./app:/var/www/html",
+  "extensions": [
+    "bmewburn.vscode-intelephense-client",
+    "onecentlin.laravel-blade",
+    "xdebug.php-debug"
+  ],
+  "settings": {
+    "terminal.integrated.shell.linux": "/bin/bash"
+  }
+}
