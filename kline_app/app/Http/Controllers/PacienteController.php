@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Paciente;
+use App\Models\Psicologo;
 use Illuminate\Http\Request;
 
 class PacienteController extends Controller
@@ -22,7 +23,9 @@ class PacienteController extends Controller
      */
     public function create()
     {
-        return view('pacientes.create');
+        /**Traer todos los psicologos */
+        $psicologos = Psicologo::all();
+        return view('pacientes.create', compact('psicologos'));
     }
 
     /**
