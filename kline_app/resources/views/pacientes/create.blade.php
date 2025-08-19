@@ -27,15 +27,11 @@
         <input type="text" name="email" id="email" required>
 
         <label for="psicologo_id">Psicólogo</label>
-        <select name="psicologo_id" id="psicologo_id" required>
-            <option value="">Seleccione un psicólogo</option>
-
-            @forelse($psicologos as $psicologo)
-                <option value="{{ $psicologo->id }}">{{ $psicologo->nombre }}</option>
-            @empty
-                Psicologo No Asignado
-            @endforelse
-
+        <select name="psicologo_id" required>
+        <option value="">Seleccione un psicólogo</option>
+        @foreach($psicologos as $psicologo)
+            <option value="{{ $psicologo->id }}">{{ $psicologo->nombre }}</option>
+        @endforeach
         </select>
 
         <button type="submit">Guardar</button>

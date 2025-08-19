@@ -36,7 +36,6 @@ class PsicologosController extends Controller
     public function show(Psicologo $psicologo)
     {
 
-        dd($psicologo);
         return view('psicologos.show', compact('psicologo'));
     }
 

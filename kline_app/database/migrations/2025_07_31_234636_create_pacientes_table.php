@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('sexo', 100);
             $table->integer('telefono');
             $table->string('email',100)->unique;
-            $table->foreignId('psicologo')->constrained('psicologos');
+            $table->foreignId('psicologo_id')->constrained('usuarios');
             $table->timestamps();
         });
     }

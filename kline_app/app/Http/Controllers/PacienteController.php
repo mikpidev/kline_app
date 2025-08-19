@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Paciente;
 use App\Models\Psicologo;
+use App\Models\Usuarios;
+use App\Models\Rol;
 use Illuminate\Http\Request;
 
 class PacienteController extends Controller
@@ -24,7 +26,13 @@ class PacienteController extends Controller
     public function create()
     {
         /**Traer todos los psicologos */
-        $psicologos = Psicologo::all();
+
+        $psicologos = Usuarios::whereHas('rol', function($query){
+
+            $query->where('nombre', 'Psicologo');
+
+        })->get();
+
         return view('pacientes.create', compact('psicologos'));
     }
 
@@ -33,25 +41,40 @@ class PacienteController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
+
+        
+        $validated = $request->validate([
             'nombre' => 'required|string|max:100',
             'fecha_nacimiento' => 'nullable|date',
             'sexo' => 'nullable|string|max:100',
             'telefono' => 'nullable|integer',
-            'email' => 'nulleable|string|unique:pacientes|max:100',
-            'psicologo_id' => 'required|exists:psicologos,id',
+            'email' => 'nullable|string|unique:pacientes|max:100',
+            'psicologo_id' => 'required|exists:usuarios,id',
 
 
         ]);
+
+
+        Paciente::create($validated);
+        
+
+        return redirect()->route('pacientes.index')
+            ->with('success', 'Paciente Registrado Correctamente!!');
+
+
     }
 
     /**
      * Muestra la informacion especifica de un paciente.
      */
-    public function show(Paciente $paciente)
+    public function show($id)
     {
+        $paciente = Paciente::with('psicologo')->findOrFail($id);
+
         return view('pacientes.show', compact('paciente')); //muestra la informacion de un solo paciente
+    
     }
+
 
     /**
      * editar paciente.
