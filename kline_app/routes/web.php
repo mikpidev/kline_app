@@ -13,6 +13,7 @@ Route::get('/', function () {
 });
 
 Route::resource('pacientes', PacienteController::class);
+Route::post('pacientes/{id}/restore', [PacienteController::class, 'restore'])->name('pacientes.restore');
     
 Route::resource('psicologos', PsicologosController::class);
 

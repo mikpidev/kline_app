@@ -13,9 +13,14 @@ class PacienteController extends Controller
     /**
      * mostrara la lista de pacientes.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $pacientes=Paciente::all(); //mandamos a llamar la db pacientes
+        
+        if($request->has('show_disabled')){
+            $pacientes = Paciente::onlyTrashed()->get();
+        }else{
+            $pacientes=Paciente::all(); //mandamos a llamar la db pacientes
+        }
 
         return view('pacientes.index', compact('pacientes')); // manda la informacion a la vista 
     }
@@ -48,7 +53,7 @@ class PacienteController extends Controller
             'fecha_nacimiento' => 'nullable|date',
             'sexo' => 'nullable|string|max:100',
             'telefono' => 'nullable|integer',
-            'email' => 'nullable|string|unique:pacientes|max:100',
+            'email' => 'nullable|email|max:100|unique:pacientes,email,',
             'psicologo_id' => 'required|exists:usuarios,id',
 
 
@@ -81,7 +86,13 @@ class PacienteController extends Controller
      */
     public function edit(Paciente $paciente)
     {
-        return view('pacientes.edit', compact('paciente'));
+        $psicologos = Usuarios::whereHas('rol', function($query){
+
+            $query->where('nombre', 'Psicologo');
+
+        })->get();        
+        
+        return view('pacientes.edit', compact('paciente', 'psicologos'));
     }
 
     /**
@@ -91,17 +102,23 @@ class PacienteController extends Controller
     {
         //debera de realizar otra vez la validacion 
 
-        $request->validate([
+        $validated = $request->validate([
             'nombre' => 'required|string|max:100',
             'fecha_nacimiento' => 'nullable|date',
             'sexo' => 'nullable|string|max:100',
             'telefono' => 'nullable|integer',
-            'email' => 'nulleable|string|unique:pacientes|max:100' . $paciente->id,
-            'psicologo_id' => 'required|exists:psicologos,id',
+            'email' => 'nullable|string|max:100|unique:pacientes,email,' . $paciente->id,
+            'psicologo_id' => 'required|exists:usuarios,id',
+
+
         ]);
 
-        $paciente->update($request->all()); //actualiza paciente
-        return redirect()->route('pacientes.index')->with('success', 'Paciente actualizado.');
+
+        $paciente->update($validated);
+        
+
+        return redirect()->route('pacientes.index')
+            ->with('success', 'Paciente Actualizado Correctamente!!');
 
     }
 
@@ -110,8 +127,18 @@ class PacienteController extends Controller
      */
     public function destroy(Paciente $paciente)
     {
-        $paciente->delete(); // Borra a los pacientes
-        return redirect()->rout('pacientes.index')->with('success', 'Paciente eliminado');
+        $paciente->delete(); // Soft Delete
+        return redirect()->route('pacientes.index')
+                         ->with('success', 'Paciente deshabilitado correctamente');
     
     }
+
+    public function restore($id)
+    {
+        $paciente = Paciente::withTrashed()->findOrFail($id);
+        $paciente->restore(); // quita el deleted_at
+        return redirect()->route('pacientes.index')
+                        ->with('success', 'Paciente restaurado correctamente');
+    }
+
 }
