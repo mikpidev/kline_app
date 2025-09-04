@@ -1,0 +1,40 @@
+.genres-section {
+    padding: 2rem;
+    color: #fff;
+  }
+  
+  .genres-title {
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+  }
+  
+  .genres-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 1.5rem;
+  }
+  
+  .genre-card {
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-start;
+    padding: 1rem;
+    height: 160px;
+    border-radius: 0.75rem;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: white;
+    cursor: pointer;
+    transition: transform 0.2s ease, filter 0.2s ease;
+  }
+  
+  .genre-card h3 {
+    margin: 0;
+  }
+  
+  .genre-card:hover {
+    transform: scale(1.05);
+    filter: brightness(1.1);
+  }
+  
